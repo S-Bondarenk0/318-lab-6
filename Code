@@ -1,0 +1,102 @@
+#include <iostream>
+#include <vector>
+#include <limits>
+
+// Array 34
+int findMaxLocalMinimum(const std::vector<int>& arr) {
+    int maxLocalMin = std::numeric_limits<int>::min(); // Початкове значення для максимуму
+    bool found = false; // Прапорець для перевірки наявності локальних мінімумів
+
+    for (size_t i = 1; i < arr.size() - 1; ++i) {
+        // Перевіряємо, чи є arr[i] локальним мінімумом
+        if (arr[i] < arr[i - 1] && arr[i] < arr[i + 1]) {
+            std::cout << "Локальний мінімум знайдено: " << arr[i] << " на позиції " << i << "\n";
+            if (arr[i] > maxLocalMin) {
+                maxLocalMin = arr[i];
+                found = true;
+            }
+        }
+    }
+
+    // Якщо локальних мінімумів немає, повертаємо -1
+    if (!found) {
+        std::cout << "Локальних мінімумів не знайдено.\n";
+    }
+    return found ? maxLocalMin : -1;
+}
+
+// Array 85
+void cyclicShiftRight(std::vector<int>& arr, int K) {
+    int N = arr.size();
+    std::vector<int> temp(K); // Допоміжний масив з K елементів
+
+    // Зберігаємо останні K елементів у тимчасовий масив
+    for (int i = 0; i < K; ++i) {
+        temp[i] = arr[N - K + i];
+    }
+
+    // Зсуваємо залишок масиву вправо
+    for (int i = N - 1; i >= K; --i) {
+        arr[i] = arr[i - K];
+    }
+
+    // Повертаємо K елементів на початок
+    for (int i = 0; i < K; ++i) {
+        arr[i] = temp[i];
+    }
+}
+
+int main() {
+    size_t N;
+    std::cout << "Введіть розмір масиву: ";
+    std::cin >> N;
+
+    if (N < 3) {
+        std::cout << "Масив повинен містити щонайменше 3 елементи.\n";
+        return 1;
+    }
+
+    std::vector<int> arr(N);
+    std::cout << "Введіть елементи масиву: ";
+    for (size_t i = 0; i < N; ++i) {
+        std::cin >> arr[i];
+    }
+
+    std::cout << "Ваш масив: ";
+    for (const auto& el : arr) {
+        std::cout << el << " ";
+    }
+    std::cout << "\n";
+
+    int result = findMaxLocalMinimum(arr);
+
+    if (result == -1) {
+        std::cout << "Локальних мінімумів немає.\n";
+    } else {
+        std::cout << "Максимальний з локальних мінімумів: " << result << "\n";
+    }
+
+    int K;
+    std::cout << "Введіть значення K (1 ≤ K ≤ 4): ";
+    std::cin >> K;
+
+    if (K < 1 || K > 4 || K >= N) {
+        std::cout << "Неправильне значення K.\n";
+        return 1;
+    }
+
+    cyclicShiftRight(arr, K);
+
+    std::cout << "Масив після циклічного зсуву: ";
+    for (int i = 0; i < N; ++i) {
+        std::cout << arr[i] << " ";
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
+
+    std::cout << std::endl;
+
+    return 0;
+}
